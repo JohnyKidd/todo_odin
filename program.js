@@ -1,3 +1,6 @@
+//global variables
+let completedTasks = 0;
+
 //selecting and creating main page content for further use
 const pageContent = document.querySelector("#content");
 
@@ -11,14 +14,25 @@ function Task(text, date) {
 function generateHeader(){
   const header = document.createElement("h1");
   header.className += "header";
-  header.innerText = "Routine Planner";
+  header.innerText = "Daily Planner";
   pageContent.appendChild(header);
+
+  const completedCounter = document.createElement("h1");
+  completedCounter.className += "counter";
+  completedCounter.id = "counter";
+  completedCounter.innerText = "0";
+  header.appendChild(completedCounter);
+
+  const counterLabel = document.createElement("p");
+  counterLabel.className += "counter";
+  counterLabel.innerText = "tasks have been completed today.";
+  header.appendChild(counterLabel);
 }
 
 function generateFooter(){
   const footer = document.createElement("h1");
   footer.className += "footer";
-  footer.innerText = "Created by Tibor Enyedi - 2021 - cringe style added after creation.. i had fever..";
+  footer.innerText = "Created by Tibor Enyedi - 2021";
   pageContent.appendChild(footer);
 }
 
@@ -65,6 +79,21 @@ function addTask(){
     removeButton.innerText = "Remove this task";
     task.appendChild(removeButton);
 
+    const completeButton = document.createElement("button");
+    completeButton.className += "buttons";
+    completeButton.style["background-color"]="#32a852";
+    completeButton.innerText = "Complete this task";
+    task.appendChild(completeButton);
+
+    completeButton.addEventListener("click",function(e){
+      pageContent.removeChild(task);
+      completedTasks += 1;
+      const counter = document.querySelector("#counter");
+      counter.innerText=completedTasks.toString();
+      const randomColor = Math.floor(Math.random()*16777215).toString(16);
+      counter.style["color"]="#"+randomColor;
+    });
+
     removeButton.addEventListener("click",function(e){
       pageContent.removeChild(task);
     });
@@ -78,14 +107,16 @@ function addTask(){
 function generateContent(){
   newTask = document.createElement("button");
   newTask.className = "buttons";
-  newTask.innerText = "Add new tasks now!";
+  newTask.innerText = "Add new tasks for today's show!";
   pageContent.appendChild(newTask);
 
 //new task button event
-  newTask.addEventListener("click", function(e){
+  newTask.addEventListener("click", function(e){//function start
     addTask();
   });
-}
+
+
+}//function end
 
 //main function for initializing the page
 function initPage(){
